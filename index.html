@@ -42,6 +42,7 @@
             text-decoration: underline;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -287,9 +288,8 @@ ADD Email VARCHAR(100);</code></pre>
             <li><strong>3NF:</strong> 2NF + Transitif bağımlılıklar ortadan kaldırılmalıdır. Örneğin, bir tablo içinde birden fazla anahtar bulunmamalıdır.</li>
         </ul>
 
-        <h3>Örnek</h3>
-        <p>Bir okulun öğrenci ve ders kayıtlarını tutmak için normalizasyon adımları şu şekilde olabilir:</p>
-
+        <h3>Örnekler</h3>
+        <h4>1NF Örneği</h4>
         <pre><code>-- 1NF: Öğrenci bilgileri ve ders kayıtları ayrı tablolara ayrılır.
 CREATE TABLE Ogrenciler (
     OgrenciID INT PRIMARY KEY,
@@ -310,8 +310,31 @@ CREATE TABLE Kayitlar (
     FOREIGN KEY (DersID) REFERENCES Dersler(DersID)
 );</code></pre>
 
-        <p><strong>2NF:</strong> Öğrenci ve ders bilgileri ilgili tablolarda saklanır, her tablo sadece o tabloya özgü bilgileri içerir.</p>
-        <p><strong>3NF:</strong> Transitif bağımlılıklar kaldırılır, her bilgi yalnızca bir kez saklanır.</p>
+        <h4>2NF Örneği</h4>
+        <p>Öğrenci ve ders bilgileri ilgili tablolarda saklanır, her tablo sadece o tabloya özgü bilgileri içerir. Ayrıca, tüm öznitelikler birincil anahtara tam bağımlı olmalıdır. Örneğin, bir ders kaydında öğrenci adı ve ders adı bilgilerini saklamak yerine sadece öğrenci ve ders kimliklerini saklamak yeterlidir:</p>
+        <pre><code>CREATE TABLE Kayitlar (
+    KayitID INT PRIMARY KEY,
+    OgrenciID INT,
+    DersID INT,
+    Tarih DATE,
+    FOREIGN KEY (OgrenciID) REFERENCES Ogrenciler(OgrenciID),
+    FOREIGN KEY (DersID) REFERENCES Dersler(DersID)
+);</code></pre>
+
+        <h4>3NF Örneği</h4>
+        <p>Transitif bağımlılıklar kaldırılır, her bilgi yalnızca bir kez saklanır. Örneğin, bir öğrenci tablosunda öğrenci adı ve bölüm bilgilerini saklarken, bölüm adı bilgilerini bölüm tablosunda tutmak ve öğrenci tablosunda sadece bölüm kimliğini saklamak yeterlidir:</p>
+        <pre><code>CREATE TABLE Bolumler (
+    BolumID INT PRIMARY KEY,
+    BolumAdi VARCHAR(100)
+);
+
+CREATE TABLE Ogrenciler (
+    OgrenciID INT PRIMARY KEY,
+    Isim VARCHAR(50),
+    DogumTarihi DATE,
+    BolumID INT,
+    FOREIGN KEY (BolumID) REFERENCES Bolumler(BolumID)
+);</code></pre>
 
         <h2 id="veritabani-kisitlamalari">Veritabanı Kısıtlamaları</h2>
 
@@ -481,7 +504,8 @@ END;</code></pre>
 
         <h2 id="iletisim">İletişim</h2>
         <p>Bu rehberle ilgili herhangi bir sorunuz varsa veya katkıda bulunmak isterseniz, lütfen aşağıdaki e-posta adresine bir mesaj gönderin:</p>
-        <p><strong>Email:</strong> <a href="mailto:example@example.com">example@example.com</a></p>
+        <p><strong>Email:</strong> <a href="mailto:k0d1rtalhaak@gmail.com">k0d1rtalhaak@gmail.com</a></p>
+        <p><strong>GitHub:</strong> <a href="https://github.com/k0d1r"><i class="fab fa-github"></i> github.com/k0d1r</a></p>
     </div>
 </body>
 </html>
