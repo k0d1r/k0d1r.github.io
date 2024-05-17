@@ -1,26 +1,487 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hesap Engellendi</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T-SQL Rehberi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+        }
+        code {
+            background: #f9f9f9;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        pre {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-  <h1>Hesabınız Engellendi</h1>
-  <p class="message">Üzgünüz, ancak troll hesaplarını ve yapay etkileşimleri otomatik olarak engelleyen yazılımımız tarafından engellendiniz.</p>
-  <p class="reason">Hesabınızın engellenme sebepleri:</p>
-  <ul class="reason-list">
-    <li>Birden fazla kez spam içeriği paylaşımı.</li>
-    <li>Yapay etkileşimlerin tespit edilmesi.</li>
-    <li>Topluluk kurallarına uymamak.</li>
-  </ul>
-  <p class="contact-info">Eğer bu durumla ilgili herhangi bir sorunuz veya itirazınız varsa, lütfen aşağıdaki iletişim bilgileri aracılığıyla bizimle iletişime geçin:</p>
-  <div class="contact-details">
-    <p><span class="contact-label">E-posta:</span> <a href="mailto:info@ornek.com">info@ornek.com</a></p>
-    <p><span class="contact-label">Telefon:</span> +90 123 456 789</p>
-  </div>
-</div>
+    <div class="container">
+        <p>T-SQL (Transact-SQL) Programlama hakkında Türkçe kaynak eksikliğinden dolayı bu kapsamlı yazı oluşturulmuştur. Bu yazıda bana yardımcı olan kaynaklar:</p>
+        <ul>
+            <li>Microsoft Learn — Transact-SQL Eğitimi</li>
+            <li>Microsoft Learn — T-SQL Dil Referansı</li>
+        </ul>
+        <p>Hepinize iyi okumalar! Umarım bu yazı, T-SQL öğrenme sürecinizde sizlere yardımcı olur. Diğer ilgili öğretici kaynaklara başlıklardan ulaşabilirsiniz.</p>
+
+        <h1>T-SQL Rehberi</h1>
+        <h2>İçindekiler</h2>
+        <ul>
+            <li><a href="#giris">Giriş</a></li>
+            <li><a href="#t-sql-nedir">T-SQL Nedir?</a></li>
+            <li>Temel Kavramlar
+                <ul>
+                    <li><a href="#degiskenler">Değişkenler</a></li>
+                    <li><a href="#veri-tipleri">Veri Tipleri</a></li>
+                    <li><a href="#ifade-ve-operatorler">İfade ve Operatörler</a></li>
+                </ul>
+            </li>
+            <li>Tablolar ve İlişkiler
+                <ul>
+                    <li><a href="#tablo-olusturma">Tablo Oluşturma</a></li>
+                    <li><a href="#birincil-anahtar-primary-key">Birincil Anahtar (Primary Key)</a></li>
+                    <li><a href="#yabanci-anahtar-foreign-key">Yabancı Anahtar (Foreign Key)</a></li>
+                </ul>
+            </li>
+            <li>Veri Manipülasyon Dili (DML)
+                <ul>
+                    <li><a href="#insert">INSERT</a></li>
+                    <li><a href="#update">UPDATE</a></li>
+                    <li><a href="#delete">DELETE</a></li>
+                    <li><a href="#select">SELECT</a></li>
+                </ul>
+            </li>
+            <li>Veri Tanımlama Dili (DDL)
+                <ul>
+                    <li><a href="#create">CREATE</a></li>
+                    <li><a href="#alter">ALTER</a></li>
+                    <li><a href="#drop">DROP</a></li>
+                </ul>
+            </li>
+            <li>Veri Kontrol Dili (DCL)
+                <ul>
+                    <li><a href="#grant">GRANT</a></li>
+                    <li><a href="#revoke">REVOKE</a></li>
+                </ul>
+            </li>
+            <li>Normalizasyon
+                <ul>
+                    <li><a href="#1nf-2nf-3nf">1NF, 2NF, 3NF</a></li>
+                </ul>
+            </li>
+            <li>Veritabanı Kısıtlamaları
+                <ul>
+                    <li><a href="#not-null">NOT NULL</a></li>
+                    <li><a href="#unique">UNIQUE</a></li>
+                    <li><a href="#check">CHECK</a></li>
+                    <li><a href="#default">DEFAULT</a></li>
+                </ul>
+            </li>
+            <li><a href="#t-sql-ve-sql-arasindaki-farklar">T-SQL ve SQL Arasındaki Farklar</a></li>
+            <li><a href="#t-sqlde-degisken-kullanimi">T-SQL'de Değişken Kullanımı</a></li>
+            <li><a href="#microsoft-sql-veri-tipleri">Microsoft SQL Veri Tipleri</a></li>
+            <li><a href="#use-komutu">USE Komutu</a></li>
+            <li><a href="#kisitlayicilar-constraints">Kısıtlayıcılar (Constraints)</a></li>
+            <li><a href="#references">REFERENCES</a></li>
+            <li><a href="#primary-key-identity">PRIMARY KEY IDENTITY</a></li>
+            <li><a href="#t-sql-rehberi-hakkinda-kapsamli-ornek">T-SQL Rehberi Hakkında Kapsamlı Örnek</a></li>
+            <li><a href="#iletisim">İletişim</a></li>
+        </ul>
+
+        <h2 id="giris">Giriş</h2>
+        <p>Bu rehber, T-SQL öğrenmek isteyenler için kapsamlı bir kaynak sunar. Temel kavramlardan başlayarak ileri düzey konulara kadar her şeyi kapsar. Gerçek dünya örnekleri ve detaylı açıklamalar ile konular daha anlaşılır hale getirilmiştir.</p>
+
+        <h2 id="t-sql-nedir">T-SQL Nedir?</h2>
+        <p>T-SQL (Transact-SQL), Microsoft SQL Server tarafından kullanılan SQL dilinin genişletilmiş bir sürümüdür. SQL standardına ek olarak prosedürel programlama özellikleri sunar. Örneğin, bir e-ticaret sitesinde müşterilerin siparişlerini takip etmek için T-SQL kullanılabilir. T-SQL, SQL'in temel veri sorgulama ve manipülasyon yeteneklerine ek olarak, gelişmiş programlama özellikleri sayesinde veritabanı işlemlerini daha dinamik ve etkili bir şekilde yönetmenizi sağlar. Bu özellikler, özellikle karmaşık iş mantıkları ve veri işlemleri gerektiren uygulamalar için büyük bir avantaj sağlar.</p>
+
+        <h2>SQL Geliştirmeleri</h2>
+        <ul>
+            <li><strong>Oracle:</strong> SQL diline eklemeler yaparak PL-SQL (Procedural Language/SQL) adında bir dil oluşturmuştur.</li>
+            <li><strong>Microsoft:</strong> SQL diline eklemeler yaparak T-SQL (Transact-SQL) adında bir dil oluşturmuştur.</li>
+        </ul>
+
+        <h2 id="t-sql-ve-sql-arasindaki-farklar">T-SQL ve SQL Arasındaki Farklar</h2>
+        <ul>
+            <li><strong>SQL (Structured Query Language):</strong>
+                <ul>
+                    <li>Veritabanlarından veri sorgulamak, veri eklemek, güncellemek ve silmek için kullanılır.</li>
+                    <li>Standart bir dildir ve birçok veritabanı yönetim sistemi tarafından desteklenir.</li>
+                </ul>
+            </li>
+            <li><strong>T-SQL (Transact-SQL):</strong>
+                <ul>
+                    <li>SQL diline ek olarak gelişmiş programlama özellikleri sunar.</li>
+                    <li>Microsoft SQL Server gibi belirli veritabanı yönetim sistemlerinde kullanılır.</li>
+                    <li>Değişken tanımlama, hata yönetimi, koşullu yürütme ve saklı yordamlar gibi ek özellikler içerir.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2 id="temel-kavramlar">Temel Kavramlar</h2>
+
+        <h3 id="degiskenler">Değişkenler</h3>
+        <p>Değişkenler, T-SQL’de verilerin geçici olarak saklanması ve işlenmesi için kullanılır. Değişken tanımlama ve kullanım kuralları şu şekildedir:</p>
+        <ul>
+            <li>Değişken isimleri Türkçe karakter ve boşlukla başlayamaz.</li>
+            <li>Değişken isimleri harf ile başlayıp harf, rakam ve alt çizgi (_) ile devam edebilir.</li>
+            <li>SQL veya T-SQL için kullanılan komutlar ve ayrılmış sözcükler (SELECT, INSERT, UPDATE, NOT vb.) değişken adı olarak kullanılamaz.</li>
+            <li>Değişken adı SQL’de özel anlamı olan sembollerle (@, @@, #, ##, $) başlamalıdır.</li>
+            <li>Değişken isimlerinde küçük veya büyük harf fark etmez.</li>
+            <li>Değişken tanımlama <code>DECLARE</code> komutu ile yapılır.</li>
+        </ul>
+
+        <pre><code>DECLARE @OgrenciAdi VARCHAR(50);  -- @OgrenciAdi adında bir değişken tanımlıyoruz
+SET @OgrenciAdi = 'Kadir';       -- Bu değişkene 'Kadir' değerini atıyoruz</code></pre>
+        <p>Bu örnekte, <code>@OgrenciAdi</code> adında bir değişken tanımlanmış ve 'Kadir' değeri atanmıştır.</p>
+
+        <h3 id="veri-tipleri">Veri Tipleri</h3>
+        <p>Veri tipleri, veritabanındaki verilerin türünü belirtir. Örneğin, bir müşteri tablosunda müşterinin doğum tarihi ve adı gibi farklı türde veriler bulunabilir.</p>
+
+        <pre><code>CREATE TABLE Musteriler (
+    MusteriID INT,             -- Tam sayı veri tipi
+    Isim VARCHAR(50),          -- Karakter dizisi veri tipi
+    DogumTarihi DATE           -- Tarih veri tipi
+);</code></pre>
+        <p>Bu örnekte, <code>INT</code> tam sayılar için, <code>VARCHAR(50)</code> maksimum 50 karakter uzunluğundaki metinler için ve <code>DATE</code> tarih bilgileri için kullanılmıştır.</p>
+
+        <h3 id="ifade-ve-operatorler">İfade ve Operatörler</h3>
+        <p>T-SQL'de ifadeler ve operatörler aritmetik ve mantıksal işlemler yapmak için kullanılır. Örneğin, bir ürünün fiyatına %10 indirim uygulamak için aritmetik operatörler kullanılabilir.</p>
+
+        <pre><code>SELECT Fiyat, Fiyat * 0.9 AS IndirimliFiyat
+FROM Urunler;</code></pre>
+        <p>Bu örnekte, <code>SELECT</code> ifadesiyle <code>Urunler</code> tablosundaki <code>Fiyat</code> sütununu seçtik ve <code>Fiyat * 0.9</code> ifadesiyle indirimli fiyatı hesapladık. <code>AS IndirimliFiyat</code> ifadesiyle bu değere <code>IndirimliFiyat</code> adını verdik.</p>
+
+        <h2 id="tablolar-ve-iliskiler">Tablolar ve İlişkiler</h2>
+
+        <h3 id="tablo-olusturma">Tablo Oluşturma</h3>
+        <p>Tablolar, verilerin depolandığı temel yapı taşlarıdır. Örneğin, bir okuldaki öğrencilerin bilgilerini saklamak için bir <code>Ogrenciler</code> tablosu oluşturulabilir.</p>
+
+        <pre><code>CREATE TABLE Ogrenciler (
+    OgrenciID INT PRIMARY KEY, -- Birincil anahtar, benzersiz öğrenci kimliği
+    Isim VARCHAR(50),         -- Öğrencinin ismi
+    DogumTarihi DATE          -- Öğrencinin doğum tarihi
+);</code></pre>
+        <p>Bu örnekte, <code>OgrenciID</code> sütunu birincil anahtar olarak tanımlandı. Bu, her öğrencinin benzersiz bir kimliğe sahip olmasını sağlar.</p>
+
+        <h3 id="birincil-anahtar-primary-key">Birincil Anahtar (Primary Key)</h3>
+        <p>Birincil anahtar, bir tablodaki her satırı benzersiz şekilde tanımlar. Örneğin, her öğrencinin benzersiz bir öğrenci kimliği olması gerektiği durumlarda kullanılır.</p>
+
+        <pre><code>ALTER TABLE Ogrenciler
+ADD CONSTRAINT PK_OgrenciID PRIMARY KEY (OgrenciID);</code></pre>
+        <p>Bu örnekte, <code>ALTER TABLE</code> ifadesiyle <code>Ogrenciler</code> tablosuna <code>PK_OgrenciID</code> adında birincil anahtar ekledik.</p>
+
+        <h3 id="yabanci-anahtar-foreign-key">Yabancı Anahtar (Foreign Key)</h3>
+        <p>Yabancı anahtarlar, iki tablo arasındaki ilişkileri tanımlar. Örneğin, bir öğrenci kayıt tablosunda öğrencinin kimliği, öğrenciler tablosundaki öğrenci kimliği ile ilişkilendirilebilir.</p>
+
+        <pre><code>CREATE TABLE Kayitlar (
+    KayitID INT PRIMARY KEY,    -- Kayıt kimliği, birincil anahtar
+    OgrenciID INT,              -- Öğrenci kimliği, yabancı anahtar
+    DersID INT,                 -- Ders kimliği
+    FOREIGN KEY (OgrenciID) REFERENCES Ogrenciler(OgrenciID) -- Yabancı anahtar tanımı
+);</code></pre>
+        <p>Bu örnekte, <code>Kayitlar</code> tablosunda <code>OgrenciID</code> sütunu, <code>Ogrenciler</code> tablosundaki <code>OgrenciID</code> sütununa referans veren bir yabancı anahtar olarak tanımlandı.</p>
+
+        <h2 id="veri-manipulasyon-dili-dml">Veri Manipülasyon Dili (DML)</h2>
+
+        <h3 id="insert">INSERT</h3>
+        <p>Veritabanına yeni veri eklemek için <code>INSERT</code> ifadesi kullanılır. Örneğin, yeni bir öğrenci eklemek için:</p>
+
+        <pre><code>INSERT INTO Ogrenciler (OgrenciID, Isim, DogumTarihi)
+VALUES (1, 'Ali Veli', '2000-01-01');</code></pre>
+        <p>Bu örnekte, <code>Ogrenciler</code> tablosuna yeni bir satır ekledik. <code>OgrenciID</code>, <code>Isim</code> ve <code>DogumTarihi</code> sütunlarına sırasıyla 1, 'Ali Veli' ve '2000-01-01' değerlerini atadık.</p>
+
+        <h3 id="update">UPDATE</h3>
+        <p>Var olan veriyi güncellemek için <code>UPDATE</code> ifadesi kullanılır. Örneğin, bir öğrencinin ismini güncellemek için:</p>
+
+        <pre><code>UPDATE Ogrenciler
+SET Isim = 'Ahmet Kaya'
+WHERE OgrenciID = 1;</code></pre>
+        <p>Bu örnekte, <code>OgrenciID</code> değeri 1 olan öğrencinin ismini 'Ahmet Kaya' olarak güncelledik.</p>
+
+        <h3 id="delete">DELETE</h3>
+        <p>Var olan veriyi silmek için <code>DELETE</code> ifadesi kullanılır. Örneğin, bir öğrenciyi silmek için:</p>
+
+        <pre><code>DELETE FROM Ogrenciler
+WHERE OgrenciID = 1;</code></pre>
+        <p>Bu örnekte, <code>OgrenciID</code> değeri 1 olan öğrenciyi <code>Ogrenciler</code> tablosundan sildik.</p>
+
+        <h3 id="select">SELECT</h3>
+        <p>Veritabanından veri sorgulamak için <code>SELECT</code> ifadesi kullanılır. Örneğin, tüm öğrencileri listelemek için:</p>
+
+        <pre><code>SELECT * FROM Ogrenciler;</code></pre>
+        <p>Bu örnekte, <code>Ogrenciler</code> tablosundaki tüm sütunları ve satırları seçtik.</p>
+
+        <h2 id="veri-tanimlama-dili-ddl">Veri Tanımlama Dili (DDL)</h2>
+
+        <h3 id="create">CREATE</h3>
+        <p>Yeni bir tablo oluşturmak için <code>CREATE</code> ifadesi kullanılır. Örneğin, yeni bir ders tablosu oluşturmak için:</p>
+
+        <pre><code>CREATE TABLE Dersler (
+    DersID INT PRIMARY KEY,    -- Ders kimliği, birincil anahtar
+    DersAdi VARCHAR(100)       -- Ders adı
+);</code></pre>
+        <p>Bu örnekte, <code>Dersler</code> adında yeni bir tablo oluşturduk ve <code>DersID</code> sütununu birincil anahtar olarak tanımladık.</p>
+
+        <h3 id="alter">ALTER</h3>
+        <p>Var olan bir tabloyu değiştirmek için <code>ALTER</code> ifadesi kullanılır. Örneğin, bir öğrenci tablosuna yeni bir sütun eklemek için:</p>
+
+        <pre><code>ALTER TABLE Ogrenciler
+ADD Email VARCHAR(100);</code></pre>
+        <p>Bu örnekte, <code>Ogrenciler</code> tablosuna <code>Email</code> adında yeni bir sütun ekledik.</p>
+
+        <h3 id="drop">DROP</h3>
+        <p>Bir tabloyu silmek için <code>DROP</code> ifadesi kullanılır. Örneğin, bir ders tablosunu silmek için:</p>
+
+        <pre><code>DROP TABLE Dersler;</code></pre>
+        <p>Bu örnekte, <code>Dersler</code> tablosunu sildik.</p>
+
+        <h2 id="veri-kontrol-dili-dcl">Veri Kontrol Dili (DCL)</h2>
+
+        <h3 id="grant">GRANT</h3>
+        <p>Belirli bir kullanıcıya veritabanı üzerinde izin vermek için <code>GRANT</code> ifadesi kullanılır. Örneğin, bir kullanıcıya <code>Ogrenciler</code> tablosunu okuma izni vermek için:</p>
+
+        <pre><code>GRANT SELECT ON Ogrenciler TO KullaniciAdi;</code></pre>
+        <p>Bu örnekte, <code>KullaniciAdi</code> adlı kullanıcıya <code>Ogrenciler</code> tablosunu okuma izni verdik.</p>
+
+        <h3 id="revoke">REVOKE</h3>
+        <p>Belirli bir kullanıcıdan veritabanı üzerindeki izni kaldırmak için <code>REVOKE</code> ifadesi kullanılır. Örneğin, bir kullanıcıdan <code>Ogrenciler</code> tablosunu okuma iznini kaldırmak için:</p>
+
+        <pre><code>REVOKE SELECT ON Ogrenciler FROM KullaniciAdi;</code></pre>
+        <p>Bu örnekte, <code>KullaniciAdi</code> adlı kullanıcıdan <code>Ogrenciler</code> tablosunu okuma iznini kaldırdık.</p>
+
+        <h2 id="normalizasyon">Normalizasyon</h2>
+
+        <h3 id="1nf-2nf-3nf">1NF, 2NF, 3NF</h3>
+        <p>Veritabanı normalizasyonu, veri tekrarını azaltmak ve veri bütünlüğünü sağlamak için kullanılır. Normalizasyonun üç ana formu vardır:</p>
+        <ul>
+            <li><strong>1NF:</strong> Tüm değerler atomik olmalıdır. Örneğin, bir tablo içinde tekrarlanan veya bölünebilir değerler bulunmamalıdır.</li>
+            <li><strong>2NF:</strong> 1NF + Tüm gereksiz veriler çıkarılmalıdır. Örneğin, bir tablo içinde yalnızca o tabloya özgü bilgiler bulunmalıdır.</li>
+            <li><strong>3NF:</strong> 2NF + Transitif bağımlılıklar ortadan kaldırılmalıdır. Örneğin, bir tablo içinde birden fazla anahtar bulunmamalıdır.</li>
+        </ul>
+
+        <h3>Örnek</h3>
+        <p>Bir okulun öğrenci ve ders kayıtlarını tutmak için normalizasyon adımları şu şekilde olabilir:</p>
+
+        <pre><code>-- 1NF: Öğrenci bilgileri ve ders kayıtları ayrı tablolara ayrılır.
+CREATE TABLE Ogrenciler (
+    OgrenciID INT PRIMARY KEY,
+    Isim VARCHAR(50),
+    DogumTarihi DATE
+);
+
+CREATE TABLE Dersler (
+    DersID INT PRIMARY KEY,
+    DersAdi VARCHAR(100)
+);
+
+CREATE TABLE Kayitlar (
+    KayitID INT PRIMARY KEY,
+    OgrenciID INT,
+    DersID INT,
+    FOREIGN KEY (OgrenciID) REFERENCES Ogrenciler(OgrenciID),
+    FOREIGN KEY (DersID) REFERENCES Dersler(DersID)
+);</code></pre>
+
+        <p><strong>2NF:</strong> Öğrenci ve ders bilgileri ilgili tablolarda saklanır, her tablo sadece o tabloya özgü bilgileri içerir.</p>
+        <p><strong>3NF:</strong> Transitif bağımlılıklar kaldırılır, her bilgi yalnızca bir kez saklanır.</p>
+
+        <h2 id="veritabani-kisitlamalari">Veritabanı Kısıtlamaları</h2>
+
+        <h3 id="not-null">NOT NULL</h3>
+        <p>Bir sütunun boş değer almasını engellemek için <code>NOT NULL</code> kısıtlaması kullanılır. Örneğin, öğrencilerin isimlerinin boş olmasını engellemek için:</p>
+
+        <pre><code>ALTER TABLE Ogrenciler
+MODIFY Isim VARCHAR(50) NOT NULL;</code></pre>
+        <p>Bu örnekte, <code>Ogrenciler</code> tablosundaki <code>Isim</code> sütununun boş olmasını engelledik.</p>
+
+        <h3 id="unique">UNIQUE</h3>
+        <p>Bir sütunun benzersiz değerler içermesini sağlamak için <code>UNIQUE</code> kısıtlaması kullanılır. Örneğin, her öğrencinin e-posta adresinin benzersiz olmasını sağlamak için:</p>
+
+        <pre><code>ALTER TABLE Ogrenciler
+ADD CONSTRAINT UQ_Email UNIQUE (Email);</code></pre>
+        <p>Bu örnekte, <code>Ogrenciler</code> tablosundaki <code>Email</code> sütununa <code>UNIQUE</code> kısıtlaması ekledik.</p>
+
+        <h3 id="check">CHECK</h3>
+        <p>Bir sütundaki değerlerin belirli bir koşulu sağlamasını sağlamak için <code>CHECK</code> kısıtlaması kullanılır. Örneğin, öğrencilerin doğum tarihinin belirli bir tarihten sonra olmasını sağlamak için:</p>
+
+        <pre><code>ALTER TABLE Ogrenciler
+ADD CONSTRAINT CHK_DogumTarihi CHECK (DogumTarihi >= '1900-01-01');</code></pre>
+        <p>Bu örnekte, <code>Ogrenciler</code> tablosundaki <code>DogumTarihi</code> sütununun '1900-01-01' tarihinden sonra olmasını sağladık.</p>
+
+        <h3 id="default">DEFAULT</h3>
+        <p>Bir sütuna varsayılan bir değer atamak için <code>DEFAULT</code> kısıtlaması kullanılır. Örneğin, öğrencilerin doğum tarihinin varsayılan olarak bugünün tarihi olmasını sağlamak için:</p>
+
+        <pre><code>ALTER TABLE Ogrenciler
+ADD CONSTRAINT DF_DogumTarihi DEFAULT GETDATE() FOR DogumTarihi;</code></pre>
+        <p>Bu örnekte, <code>Ogrenciler</code> tablosundaki <code>DogumTarihi</code> sütununa varsayılan olarak bugünün tarihini atadık.</p>
+
+        <h2 id="microsoft-sql-veri-tipleri">Microsoft SQL Veri Tipleri</h2>
+
+        <h3>INT</h3>
+        <p><strong>Açıklama:</strong> Tam sayıları saklar.</p>
+        <p><strong>Depolama Alanı:</strong> 4 bayt</p>
+        <p><strong>Değer Aralığı:</strong> -2,147,483,648 ile 2,147,483,647</p>
+
+        <h3>VARCHAR(n)</h3>
+        <p><strong>Açıklama:</strong> Değişken uzunlukta karakter dizilerini saklar.</p>
+        <p><strong>Depolama Alanı:</strong> Kullanılan karakter sayısına göre değişir.</p>
+        <p><strong>Maksimum Uzunluk:</strong> 1 ile 8,000 karakter</p>
+
+        <h3>DATE</h3>
+        <p><strong>Açıklama:</strong> Tarih bilgilerini saklar (yıl, ay, gün).</p>
+        <p><strong>Depolama Alanı:</strong> 3 bayt</p>
+        <p><strong>Değer Aralığı:</strong> 0001-01-01 ile 9999-12-31</p>
+
+        <h3>BIT</h3>
+        <p><strong>Açıklama:</strong> Boolean değerleri saklar (0 veya 1).</p>
+        <p><strong>Depolama Alanı:</strong> 1 bit</p>
+
+        <h3>DECIMAL(p, s)</h3>
+        <p><strong>Açıklama:</strong> Ondalık sayıları saklar.</p>
+        <p><strong>Depolama Alanı:</strong> P ve S değerlerine göre değişir.</p>
+        <p><strong>Değer Aralığı:</strong> -10³⁸ +1 ile 10³⁸ -1</p>
+
+        <h2 id="use-komutu">USE Komutu</h2>
+        <p><code>USE</code> komutu, belirtilen veritabanını aktif hale getirir. Bu komut, özellikle birden fazla veritabanının bulunduğu ortamlarda hangi veritabanı üzerinde işlem yapılacağını belirtmek için kullanılır.</p>
+
+        <h3>Örnek Kullanım</h3>
+        <p>Örneğin, TestDB adlı bir veritabanınız olduğunu ve bu veritabanı üzerinde işlem yapmak istediğinizi varsayalım. Öncelikle <code>USE</code> komutuyla TestDB veritabanını seçersiniz.</p>
+
+        <pre><code>USE TestDB;</code></pre>
+
+        <h2 id="kisitlayicilar-constraints">Kısıtlayıcılar (Constraints)</h2>
+        <p>Veritabanı kısıtlamaları ve kavramları, veritabanı yapısını ve veri bütünlüğünü sağlamak için kritik öneme sahiptir. Aşağıda, çeşitli kısıtlamalar ve SQL ifadeleri ile bu kavramların günlük hayattan örneklerle nasıl kullanıldığını kapsamlı bir şekilde ele alacağız.</p>
+
+        <h3>IF NOT EXISTS</h3>
+        <p><code>IF NOT EXISTS</code> ifadesi, bir tablo veya diğer veritabanı nesneleri oluşturulmadan önce, bu nesnenin zaten var olup olmadığını kontrol eder. Eğer nesne yoksa, o nesne oluşturulur.</p>
+
+        <h4>Günlük Hayattan Örnek</h4>
+        <p>Bir kütüphane sisteminde, "kitaplar" tablosu zaten varsa yeniden oluşturulmaz, yoksa yeni oluşturulur.</p>
+
+        <pre><code>IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'kitaplar')
+BEGIN
+    CREATE TABLE kitaplar (
+        kitap_id INT PRIMARY KEY,
+        kitap_adi VARCHAR(100) NOT NULL
+    );
+END;</code></pre>
+
+        <h3>BEGIN - END</h3>
+        <p><code>BEGIN - END</code> ifadesi, SQL içinde bir grup komutu bir arada tutmak için kullanılır. Bu ifadeler, belirli koşullar sağlandığında veya bir işlem başlatıldığında belirli bir grup komutun çalıştırılmasını sağlar.</p>
+
+        <h4>Günlük Hayattan Örnek</h4>
+        <p>Bir mağaza sistemi, belirli bir müşteri bilgilerini güncelleme işlemini bir grup olarak yürütmek.</p>
+
+        <pre><code>BEGIN
+    UPDATE musteriler SET ad = 'Ali' WHERE musteri_id = 1;
+    UPDATE musteriler SET soyad = 'Veli' WHERE musteri_id = 1;
+END;</code></pre>
+
+        <h2 id="references">REFERENCES</h2>
+        <p><code>REFERENCES</code> ifadesi, bir tablodaki bir sütunun başka bir tablodaki birincil anahtara bağlandığını belirtir. Bu, iki tablo arasında bir ilişki kurar ve veri tutarlılığını sağlar.</p>
+
+        <h4>Günlük Hayattan Örnek</h4>
+        <p>Bir öğrenci ve sınıf sisteminde, her öğrencinin bir sınıfa ait olduğunu belirtmek için "sınıf_id" sütunu kullanılır. Bu sütun, "sınıflar" tablosundaki "sınıf_id" sütununa referans verir.</p>
+
+        <pre><code>CREATE TABLE siniflar (
+    sinif_id INT PRIMARY KEY,
+    sinif_adi VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE ogrenciler (
+    ogrenci_id INT PRIMARY KEY,
+    ad VARCHAR(50) NOT NULL,
+    sinif_id INT,
+    FOREIGN KEY (sinif_id) REFERENCES siniflar(sinif_id)
+);</code></pre>
+
+        <h2 id="primary-key-identity">PRIMARY KEY IDENTITY</h2>
+        <p><code>PRIMARY KEY IDENTITY</code> ifadesi, bir tablonun birincil anahtar sütununu otomatik olarak artan bir sayı ile oluşturur. Bu, her yeni kaydın benzersiz bir kimlik numarası almasını sağlar.</p>
+
+        <h4>Günlük Hayattan Örnek</h4>
+        <p>Bir müşteri tablosunda her müşteriye otomatik olarak benzersiz bir müşteri kimlik numarası verilmesi.</p>
+
+        <pre><code>CREATE TABLE musteriler (
+    musteri_id INT PRIMARY KEY IDENTITY(1,1),
+    ad VARCHAR(50) NOT NULL,
+    soyad VARCHAR(50) NOT NULL
+);</code></pre>
+
+        <h2 id="t-sql-rehberi-hakkinda-kapsamli-ornek">T-SQL Rehberi Hakkında Kapsamlı Örnek</h2>
+        <p>Bu kavramların hepsini içeren bir örnek oluşturalım. Aşağıda, üniversite veritabanı için bolumler, ogrenciler ve dersler tablolarını oluşturduğumuzu gösteren bir örnek yer almaktadır:</p>
+
+        <pre><code>-- Bölümler tablosu zaten yoksa oluştur
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'bolumler')
+BEGIN
+    CREATE TABLE bolumler (
+        bolum_id INT PRIMARY KEY IDENTITY(1,1),
+        bolum_adi VARCHAR(100) NOT NULL
+    );
+END;
+
+-- Öğrenciler tablosu zaten yoksa oluştur
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'ogrenciler')
+BEGIN
+    CREATE TABLE ogrenciler (
+        ogrenci_id INT PRIMARY KEY IDENTITY(1,1),
+        ad VARCHAR(50) NOT NULL,
+        soyad VARCHAR(50) NOT NULL,
+        bolum_id INT,
+        FOREIGN KEY (bolum_id) REFERENCES bolumler(bolum_id)
+    );
+END;
+
+-- Dersler tablosu zaten yoksa oluştur
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'dersler')
+BEGIN
+    CREATE TABLE dersler (
+        ders_id INT PRIMARY KEY IDENTITY(1,1),
+        ders_adi VARCHAR(100) NOT NULL,
+        bolum_id INT,
+        FOREIGN KEY (bolum_id) REFERENCES bolumler(bolum_id)
+    );
+END;</code></pre>
+
+        <h3>Kavramların Açıklaması</h3>
+        <ul>
+            <li><strong>IF NOT EXISTS:</strong> Bu ifade, her tablonun mevcut olup olmadığını kontrol eder. Eğer tablo mevcut değilse, tablo oluşturulur.</li>
+            <li><strong>BEGIN - END:</strong> Bu ifadeler, bir grup SQL komutunu birlikte çalıştırmak için kullanılır. Tabloların oluşturulması gibi işlemleri bir arada tutar.</li>
+            <li><strong>REFERENCES:</strong> Bu ifade, bir tablodaki sütunun başka bir tablodaki sütuna referans verdiğini belirtir. Bu örnekte, <code>ogrenciler</code> ve <code>dersler</code> tablolarındaki <code>bolum_id</code> sütunları, <code>bolumler</code> tablosundaki <code>bolum_id</code> sütununa referans verir.</li>
+            <li><strong>PRIMARY KEY IDENTITY:</strong> Bu ifade, bir tablonun birincil anahtar sütununu otomatik olarak artan bir sayı ile oluşturur. Her yeni kaydın benzersiz bir kimlik numarası almasını sağlar.</li>
+            <li><strong>FOREIGN KEY:</strong> Bu ifade, bir tablodaki sütunun başka bir tablodaki birincil anahtara referans verdiğini belirtir, böylece veri tutarlılığı sağlanır.</li>
+        </ul>
+
+        <h2 id="iletisim">İletişim</h2>
+        <p>Bu rehberle ilgili herhangi bir sorunuz varsa veya katkıda bulunmak isterseniz, lütfen aşağıdaki e-posta adresine bir mesaj gönderin:</p>
+        <p><strong>Email:</strong> <a href="mailto:example@example.com">example@example.com</a></p>
+    </div>
 </body>
 </html>
