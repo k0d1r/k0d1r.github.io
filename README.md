@@ -1,4 +1,4 @@
-### T-SQL (Transact-SQL) Programlama hakkında Türkçe kaynak eksikliğinden dolayı bu kapsamlı yazı oluşturulmuştur. Bu yazıda bana yardımcı olan kaynaklar:
+### Bu yazıda bana yardımcı olan kaynaklar:
 
 - Microsoft Learn — Transact-SQL Eğitimi
 - Microsoft Learn — T-SQL Dil Referansı
